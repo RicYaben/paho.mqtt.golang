@@ -208,7 +208,9 @@ func startIncomingComms(conn io.Reader,
 
 				if t, ok := token.(*SubscribeToken); ok {
 					DEBUG.Println(NET, "startIncomingComms: granted qoss", m.ReturnCodes)
-					for i, qos := range m.ReturnCodes {
+
+					// acknowledge only an equal amount of subs than return codes
+					for i, qos := range m.ReturnCodes[:len(t.subs)] {
 						t.subResult[t.subs[i]] = qos
 					}
 				}
